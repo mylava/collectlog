@@ -1,4 +1,4 @@
-package com.ruwe.log.test;
+package com.ruwe.collectlog.test;
 
 import java.util.ArrayList;
 import java.util.List;

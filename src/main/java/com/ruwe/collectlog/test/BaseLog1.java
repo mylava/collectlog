@@ -1,4 +1,4 @@
-package com.ruwe.log.test;
+package com.ruwe.collectlog.test;
 
 import com.alibaba.fastjson.JSON;
 

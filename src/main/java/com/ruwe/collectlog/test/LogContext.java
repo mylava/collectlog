@@ -1,6 +1,4 @@
-package com.ruwe.log.test;
-
-import com.ruwe.log.util.IdGenerator;
+package com.ruwe.collectlog.test;
 
 /**
  * Created by lipengfei on 2017/6/1.

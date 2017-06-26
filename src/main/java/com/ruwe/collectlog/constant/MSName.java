@@ -1,4 +1,4 @@
-package com.ruwe.log.constant;
+package com.ruwe.collectlog.constant;
 
 /**
  * Created by lipengfei on 2017/6/1.

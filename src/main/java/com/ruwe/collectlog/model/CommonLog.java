@@ -1,8 +1,8 @@
-package com.ruwe.log.model;
+package com.ruwe.collectlog.model;
 
-import com.ruwe.log.constant.LogType;
-import com.ruwe.log.constant.MSName;
-import com.ruwe.log.context.InvokeTree;
+import com.ruwe.collectlog.constant.LogType;
+import com.ruwe.collectlog.constant.MSName;
+import com.ruwe.collectlog.context.InvokeTree;
 
 /**
  * Created by lipengfei on 2017/6/7.

@@ -1,11 +1,11 @@
-package com.ruwe.log.aspect;
+package com.ruwe.collectlog.aspect;
 
-import com.ruwe.log.constant.LogType;
-import com.ruwe.log.constant.MSName;
-import com.ruwe.log.context.InvokeTree;
-import com.ruwe.log.context.LogContext;
-import com.ruwe.log.model.BaseLog;
-import com.ruwe.log.model.CommonLog;
+import com.ruwe.collectlog.constant.LogType;
+import com.ruwe.collectlog.constant.MSName;
+import com.ruwe.collectlog.context.InvokeTree;
+import com.ruwe.collectlog.context.LogContext;
+import com.ruwe.collectlog.model.BaseLog;
+import com.ruwe.collectlog.model.CommonLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

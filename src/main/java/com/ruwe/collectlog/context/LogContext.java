@@ -1,7 +1,7 @@
-package com.ruwe.log.context;
+package com.ruwe.collectlog.context;
 
 
-import com.ruwe.log.model.BaseLog;
+import com.ruwe.collectlog.model.BaseLog;
 
 /**
  * 线程上下文环境

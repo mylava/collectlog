@@ -1,12 +1,12 @@
-package com.ruwe.log.model;
+package com.ruwe.collectlog.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.ValueFilter;
-import com.ruwe.log.constant.LogType;
-import com.ruwe.log.constant.MSName;
-import com.ruwe.log.context.InvokeTree;
-import com.ruwe.log.util.IdGenerator;
-import com.ruwe.log.util.LocalAddress;
+import com.ruwe.collectlog.constant.LogType;
+import com.ruwe.collectlog.constant.MSName;
+import com.ruwe.collectlog.context.InvokeTree;
+import com.ruwe.collectlog.util.IdGenerator;
+import com.ruwe.collectlog.util.LocalAddress;
 
 import java.io.Serializable;
 import java.util.HashMap;

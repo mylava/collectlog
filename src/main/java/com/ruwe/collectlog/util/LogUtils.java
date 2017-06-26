@@ -1,8 +1,8 @@
-package com.ruwe.log.util;
+package com.ruwe.collectlog.util;
 
-import com.ruwe.log.constant.LogType;
-import com.ruwe.log.context.LogContext;
-import com.ruwe.log.model.BaseLog;
+import com.ruwe.collectlog.constant.LogType;
+import com.ruwe.collectlog.context.LogContext;
+import com.ruwe.collectlog.model.BaseLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
