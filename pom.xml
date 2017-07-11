@@ -6,7 +6,7 @@
 
     <groupId>com.ruwe</groupId>
     <artifactId>collectlog</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <dependencies>
         <dependency>
@@ -60,4 +60,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- 发布项目配置 -->
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>nexus-releases</name>
+            <url>http://nexus.ruwe.cn/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>snapshots</name>
+            <url>http://nexus.ruwe.cn/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
