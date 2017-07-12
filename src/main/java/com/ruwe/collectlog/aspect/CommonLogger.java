@@ -40,7 +40,11 @@ public class CommonLogger {
         BaseLog baseLog = LogContext.getBaseLog(null);
         InvokeTree invokeTree = baseLog.getInvokeTree();
 
-        invokeTree.enter(methodName);
+        if (invokeTree.getCurNode() == null) {
+            invokeTree.start(methodName);
+        } else {
+            invokeTree.enter(methodName);
+        }
 
         //获取请求参数
         Object[] args = joinPoint.getArgs();

@@ -9,9 +9,25 @@ import java.util.List;
  */
 public class InvokeTree implements Serializable{
     //方法起始节点
-    public InvokeNode rootNode;
+    private InvokeNode rootNode;
     //当前节点
-    public InvokeNode curNode;
+    private InvokeNode curNode;
+
+    public InvokeNode getRootNode() {
+        return rootNode;
+    }
+
+    public void setRootNode(InvokeNode rootNode) {
+        this.rootNode = rootNode;
+    }
+
+    public InvokeNode getCurNode() {
+        return curNode;
+    }
+
+    public void setCurNode(InvokeNode curNode) {
+        this.curNode = curNode;
+    }
 
     public static class InvokeNode {
         public InvokeNode(int deep) {

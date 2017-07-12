@@ -10,6 +10,7 @@ import com.ruwe.collectlog.util.LocalAddress;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +39,14 @@ public class BaseLog implements Serializable{
     private static ValueFilter valueFilter = new ValueFilter() {
         @Override
         public Object process(Object object, String name, Object value) {
-            if(name.equals("invokeTree")){
+//            System.out.println("value==="+value+"--------是否Enum-----"+(value instanceof Enum));
+            if (object instanceof Enum) {
+                return object.toString();
+            }
+            if (value instanceof Enum) {
+                return value.toString();
+            }
+            if (name.equals("invokeTree")){
                 BaseLog baseLog = (BaseLog) object;
                 return baseLog.getInvokeTree().toString();
             }
