@@ -8,6 +8,8 @@ import com.ruwe.collectlog.context.InvokeTree;
 import com.ruwe.collectlog.util.IdGenerator;
 import com.ruwe.collectlog.util.LocalAddress;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,12 @@ public class BaseLog implements Serializable{
         @Override
         public Object process(Object object, String name, Object value) {
 //            System.out.println("value==="+value+"--------是否Enum-----"+(value instanceof Enum));
+            if (object instanceof ServletRequest) {
+                return object.toString();
+            }
+            if (value instanceof ServletRequest) {
+                return "request";
+            }
             if (object instanceof Enum) {
                 return object.toString();
             }

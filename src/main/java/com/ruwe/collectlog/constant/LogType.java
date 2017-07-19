@@ -7,18 +7,24 @@ public enum LogType {
     API_REQUEST("API调用"),
     API_RESPONSE("API响应"),
     //是否加入 process usercenter 类型
+    @Deprecated
     PROCESS_REQUEST("PROCESS调用"),
+    @Deprecated
     PROCESS_RESPONSE("PROCESS响应"),
+    SERVICE_REQUEST("SERVICE调用"),
+    SERVICE_RESPONSE("SERVICE响应"),
+    HANDLER_REQUEST("HANDLER调用"),
+    HANDLER_RESPONSE("HANDLER响应"),
     DB_REQUEST("DB调用"),
     DB_RESPONSE("DB响应"),
-    JOB_START("job开始"),
-    JOB_END("job结束"),
+    JOB_START("JOB开始"),
+    JOB_END("JOB结束"),
     CUSTOM_DEBUG("自定义DEBUG"),
     CUSTOM_INFO("自定义INFO"),
     CUSTOM_WARN("自定义WARN"),
     CUSTOM_ERR("自定义ERROR"),
-    THIRD_REQUEST("第三方调用"),
-    THIRD_RESPONSE("第三方响应");
+    OPEN_REQUEST("第三方调用"),
+    OPEN_RESPONSE("第三方响应");
 
     private String description;
 
@@ -39,14 +45,20 @@ public enum LogType {
             case "PROCESS" :
                 result = LogType.PROCESS_REQUEST;
                 break;
+            case "SERVICE" :
+                result = LogType.SERVICE_REQUEST;
+                break;
+            case "HANDLER" :
+                result = LogType.HANDLER_REQUEST;
+                break;
             case "DB" :
                 result = LogType.DB_REQUEST;
                 break;
             case "JOB" :
                 result = LogType.JOB_START;
                 break;
-            case "THIRD" :
-                result = LogType.THIRD_REQUEST;
+            case "OPEN" :
+                result = LogType.OPEN_REQUEST;
                 break;
             default:
                 result = LogType.API_REQUEST;
@@ -64,14 +76,20 @@ public enum LogType {
             case "PROCESS" :
                 result = LogType.PROCESS_RESPONSE;
                 break;
+            case "SERVICE" :
+                result = LogType.SERVICE_RESPONSE;
+                break;
+            case "HANDLER" :
+                result = LogType.HANDLER_RESPONSE;
+                break;
             case "DB" :
                 result = LogType.DB_RESPONSE;
                 break;
             case "JOB" :
                 result = LogType.JOB_END;
                 break;
-            case "THIRD" :
-                result = LogType.THIRD_RESPONSE;
+            case "OPEN" :
+                result = LogType.OPEN_RESPONSE;
                 break;
             default:
                 result = LogType.API_RESPONSE;
