@@ -13,6 +13,8 @@ public class InvokeTree implements Serializable{
     //当前节点
     private InvokeNode curNode;
 
+    private int deep;
+
     public InvokeNode getRootNode() {
         return rootNode;
     }
@@ -67,6 +69,15 @@ public class InvokeTree implements Serializable{
             }
             return true;
         }
+
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("InvokeNode{");
+            sb.append("invokeMethod='").append(invokeMethod).append('\'');
+            sb.append(", invokeCount=").append(invokeCount);
+            sb.append('}');
+            return sb.toString();
+        }
     }
 
     public InvokeTree() {
@@ -81,6 +92,7 @@ public class InvokeTree implements Serializable{
         rootNode.invokeMethod = invokeMethod;
         this.rootNode = rootNode;
         this.curNode = rootNode;
+        this.deep = 0;
     }
 
     /**
@@ -96,8 +108,9 @@ public class InvokeTree implements Serializable{
             parentNode.childNodes = new ArrayList();
         }
         parentNode.childNodes.add(newNode);
-
+//        System.out.println("\nparentNode="+parentNode+"********* childnodes="+parentNode.childNodes);
         this.curNode = newNode;
+        this.deep++;
         //重复调用整理
         cleanRepeatNode(parentNode);
     }
@@ -119,6 +132,7 @@ public class InvokeTree implements Serializable{
         InvokeNode b = parentNode.childNodes.get(len - 1);
         if (a.equals(b)) {
             parentNode.childNodes.remove(len - 1);
+            //调用次数加一
             a.invokeCount++;
         }
         cleanRepeatNode(parentNode.parentNode);
@@ -126,6 +140,8 @@ public class InvokeTree implements Serializable{
 
     public void exit() {
         this.curNode = this.curNode.parentNode;
+        this.deep--;
+//        this.curNode.childNodes = null;
     }
 
 /*    public void clear() {
@@ -150,16 +166,16 @@ public class InvokeTree implements Serializable{
     }
 
     private void buildShow(InvokeNode node, StringBuilder sb) {
-
         if (node != null) {
             if (node.parentNode != null) {
                 sb.append("->");
             }
-            sb.append(node.invokeMethod).append(node.invokeCount > 1 ? ("[repeat@" + node.invokeCount) + "]" : "");
+            if (this.curNode != null) {
+                sb.append(node.invokeMethod).append(node.invokeCount > 1 ? ("[repeat@" + node.invokeCount) + "]" : "");
+            }
             //控制调用深度只打印8以内的
-            if (node.deep <= 8) {
+            if (this.deep>node.deep && node.deep <= 8) {
                 if (node.childNodes != null && node.childNodes.size() > 0) {
-
                     InvokeNode chNode = node.childNodes.get(node.childNodes.size()-1);
                     buildShow(chNode, sb);
 
@@ -174,28 +190,51 @@ public class InvokeTree implements Serializable{
 //        BootConfig.clientConfig = clientConfig;
         InvokeTree invokeTree = new InvokeTree();
         invokeTree.start("controller.test");
+        System.out.println("进1->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
+
         invokeTree.enter("service.hello");
+        System.out.println("进2->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.enter("invoke1");
+        System.out.println("进3->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.enter("invokeSub1");
+        System.out.println("进4->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退1->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
+
+
         invokeTree.enter("invokeSub2");
+        System.out.println("进5->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退2->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
         invokeTree.enter("invokeSub2");
+        System.out.println("进7->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退3->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退4->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
 
         invokeTree.enter("invoke2");
+        System.out.println("进8->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.enter("invoke21");
+        System.out.println("进9->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退5->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退6->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
 
         invokeTree.enter("invoke2");
+        System.out.println("进10->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.enter("invoke21");
+        System.out.println("进11->"+invokeTree.toString()+"==========="+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退7->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
         invokeTree.exit();
+        System.out.println("退8->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
 
         invokeTree.exit();
+        System.out.println("退9->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
         invokeTree.exit();
-        System.out.println(invokeTree.toString());
+        System.out.println("退10->"+invokeTree.toString()+"\t+-----"+invokeTree.toString().split("->").length);
+
     }
 }

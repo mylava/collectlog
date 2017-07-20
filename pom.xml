@@ -69,7 +69,7 @@
             <url>http://nexus.ruwe.cn/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>nexus-snapshots</id>
             <name>snapshots</name>
             <url>http://nexus.ruwe.cn/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>

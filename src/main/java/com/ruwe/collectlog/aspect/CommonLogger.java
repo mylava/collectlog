@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CommonLogger {
     private static Logger LOGGER_PRO = LoggerFactory.getLogger("COMMON");
+    private static Logger LOGGER_ERR = LoggerFactory.getLogger("ERROR");
     private String msName;
     private String logType;
 
@@ -58,18 +59,25 @@ public class CommonLogger {
 
         LOGGER_PRO.info(log.parseLog());
 
-        Object obj = joinPoint.proceed();
 
-        invokeTree.exit();
-
-        baseLog = log
-                .now(System.currentTimeMillis())
-                .logType(LogType.parseResponse(logType))
-                .msName(MSName.valueOf(msName))
-                .invokeTree(invokeTree)
-                .result(obj);
-
-        LOGGER_PRO.info(baseLog.parseLog());
+        Object obj = null;
+        try {
+            obj = joinPoint.proceed();
+        } catch (Throwable throwable) {
+            LOGGER_ERR.error(throwable.getMessage());
+            //因为这个aop在业务aop之后，在记录异常信息后继续抛出异常，由业务aop进行封装
+            throw throwable;
+        } finally {
+            log = CommonLog.build(log)
+                    .now(System.currentTimeMillis())
+                    .logType(LogType.parseResponse(logType))
+                    .msName(MSName.valueOf(msName))
+                    .invokeTree(invokeTree)
+                    .result(obj);
+            LOGGER_PRO.info(log.parseLog());
+            invokeTree.exit();
+            baseLog.invokeTree(invokeTree);
+        }
         return obj;
     }
 }

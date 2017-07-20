@@ -93,17 +93,20 @@ public class WebLogger {
         Object obj = null;
         try {
             obj = joinPoint.proceed();
-            invokeTree.exit();
-            baseLog = baseLog.now(System.currentTimeMillis())
-                    .logType(LogType.parseResponse(logType))
-                    .msName(MSName.valueOf(msName))
-                    .invokeTree(invokeTree);
-
-            LOGGER_WEB.info(baseLog.parseLog(obj));
         } catch (Throwable throwable) {
             LOGGER_ERR.error(throwable.getMessage());
             //因为这个aop在业务aop之后，在记录异常信息后继续抛出异常，由业务aop进行封装
             throw throwable;
+        } finally {
+            RequestLog requestLog = RequestLog.build(baseLog)
+                    .now(System.currentTimeMillis())
+                    .logType(LogType.parseResponse(logType))
+                    .msName(MSName.valueOf(msName))
+                    .invokeTree(invokeTree);
+            LOGGER_WEB.info(requestLog.parseLog());
+
+            invokeTree.exit();
+            baseLog.invokeTree(invokeTree);
         }
         return obj;
     }
