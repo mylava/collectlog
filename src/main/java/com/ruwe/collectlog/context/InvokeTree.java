@@ -31,6 +31,14 @@ public class InvokeTree implements Serializable{
         this.curNode = curNode;
     }
 
+    public int getDeep() {
+        return deep;
+    }
+
+    public void setDeep(int deep) {
+        this.deep = deep;
+    }
+
     public static class InvokeNode {
         public InvokeNode(int deep) {
             this.deep = deep;

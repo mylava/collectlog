@@ -40,4 +40,8 @@ public class LogContext {
         return getContext(traceId).baseLog;
     }
 
+    public static void clear() {
+        local.remove();
+    }
+
 }
