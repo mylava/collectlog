@@ -6,6 +6,7 @@ package com.ruwe.collectlog.constant;
  */
 public enum MSName {
     KOULIANG_API("口粮API"),
+    CMS_API("CMS_API"),
     USER_CENTER("USERCENTER");
 
     private String description;
