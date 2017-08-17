@@ -1,6 +1,8 @@
 package com.ruwe.collectlog.model;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.ValueFilter;
 import com.ruwe.collectlog.constant.LogType;
 import com.ruwe.collectlog.constant.MSName;
@@ -9,52 +11,46 @@ import com.ruwe.collectlog.util.IdGenerator;
 import com.ruwe.collectlog.util.LocalAddress;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * 基础日志Bean
  * Created by lipengfei on 2017/6/6.
  */
-public class BaseLog implements Serializable{
+public class BaseLog implements Serializable {
     //日志ID，和TraceId一致，用于调用链追踪
-    protected String id;
+    public String id;
     //日志类型
-    protected LogType logType;
+    public LogType logType;
     //当前时间(记录调用时间、响应时间等)
-    protected Long now;
+    public Long now;
     //所在服务的IP
-    protected String localIp;
+    public String localIp;
     //所在服务的主机名
-    protected String localHostName;
+    public String localHostName;
     //微服务名称
-    protected MSName msName;
+    public MSName msName;
     //调用链对象
     protected InvokeTree invokeTree;
+    //表示调用链的字符串
+    public String invokeChain;
 
-    private static IdGenerator idGenerator = new IdGenerator(0,0);
+    private static IdGenerator idGenerator = new IdGenerator(0, 0);
 
     //设置调用链转换JSONString时的格式
     private static ValueFilter valueFilter = new ValueFilter() {
         @Override
         public Object process(Object object, String name, Object value) {
-//            System.out.println("value==="+value+"--------是否Enum-----"+(value instanceof Enum));
-            if (object instanceof ServletRequest) {
-                return object.toString();
+            if (object instanceof ServletRequest
+                    || value instanceof ServletRequest) {
+                return null;
             }
-            if (value instanceof ServletRequest) {
-                return "request";
+            if (name.equals("invokeTree")) {
+                return null;
             }
-            if (object instanceof Enum) {
-                return object.toString();
-            }
-            if (value instanceof Enum) {
-                return value.toString();
-            }
-            if (name.equals("invokeTree")){
+            if (name.equals("invokeChain")) {
                 BaseLog baseLog = (BaseLog) object;
                 return baseLog.getInvokeTree().toString();
             }
@@ -100,6 +96,7 @@ public class BaseLog implements Serializable{
         this.localIp = localIp;
         return this;
     }
+
     public String getLocalHostName() {
         return localHostName;
     }
@@ -127,15 +124,15 @@ public class BaseLog implements Serializable{
         return this;
     }
 
-    public static BaseLog build(String traceId){
+    public static BaseLog build(String traceId) {
         if (null != traceId && !traceId.isEmpty()) {
             return build().id(traceId);
         } else {
-            return build().id(String.valueOf(idGenerator.nextId()));
+            return build().id(java.lang.String.valueOf(idGenerator.nextId()));
         }
     }
 
-    private static BaseLog build(){
+    private static BaseLog build() {
         return new BaseLog()
                 .localIp(LocalAddress.ipAddress())
                 .localHostName(LocalAddress.hostName())
@@ -144,49 +141,56 @@ public class BaseLog implements Serializable{
 
     /**
      * 将BaseLog对象转换成JSONString
+     *
      * @return
      */
-    public String parseLog() {
-        Map<String,Object> map = new HashMap<>();
-        map.put(this.getClass().getName(),this);
+    public String toJson() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(this.getClass().getName(), this);
         return JSON.toJSONString(map, valueFilter);
     }
 
     /**
      * 将BaseLog对象转换成JSONString
+     *
      * @param obj 表示补充对象
      * @return
      */
-    public String parseLog(Object obj) {
-        Map<String,Object> map = new HashMap<>();
-        map.put(this.getClass().getName(),this);
+    public String toJson(Object obj) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(this.getClass().getName(), this);
         if (null != obj)
-            map.put(obj.getClass().getName(),obj);
+            map.put(obj.getClass().getName(), obj);
         return JSON.toJSONString(map, valueFilter);
     }
 
     /**
      * 将BaseLog对象转换成JSONString
-     * @param title 补充对象的描述
+     *
+     * @param title     补充对象的描述
      * @param replenish 补充对象
      * @return
      */
-    public String parseLog(String title, Map<Object,Object> replenish) {
-        Map<String,Object> map = new HashMap<>();
-        map.put(this.getClass().getName(),this);
+    public String toJson(String title, Map<Object, Object> replenish) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(this.getClass().getName(), this);
         if (null != replenish)
-            map.put(title,replenish);
+            map.put(title, replenish);
         return JSON.toJSONString(map, valueFilter);
     }
 
-  /*  public String parseLog(Object obj, Map<String,String> replenish) {
-        Map<String,Object> map = new HashMap<>();
-        map.put(this.getClass().getName(),this);
-        if (null != obj)
-            map.put(obj.getClass().getName(),obj);
-        if (null != replenish)
-            map.put("replenish",replenish);
-        return JSON.toJSONString(map, valueFilter);
-    }*/
-
+    /**
+     * 将JSONString对象转换成BaseLog
+     *
+     * @param json
+     * @return
+     */
+    public static BaseLog toBaseLog(String json) {
+        Map<String, BaseLog> map = JSONObject.parseObject(json, new TypeReference<Map<String, BaseLog>>() {
+        });
+        if (map.containsKey(BaseLog.class.getName())) {
+            return map.get(BaseLog.class.getName());
+        }
+        return null;
+    }
 }

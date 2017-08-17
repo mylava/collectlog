@@ -57,7 +57,7 @@ public class CommonLogger {
                 .invokeTree(invokeTree)
                 .params(args);
 
-        LOGGER_PRO.info(log.parseLog());
+        LOGGER_PRO.info(log.toJson());
 
 
         Object obj = null;
@@ -74,7 +74,7 @@ public class CommonLogger {
                     .msName(MSName.valueOf(msName))
                     .invokeTree(invokeTree)
                     .result(obj);
-            LOGGER_PRO.info(log.parseLog());
+            LOGGER_PRO.info(log.toJson());
             invokeTree.exit();
             baseLog.invokeTree(invokeTree);
         }

@@ -19,7 +19,7 @@ public final class LogUtils {
         if(LOG.isInfoEnabled()) {
             BaseLog baseLog = LogContext.getBaseLog(null);
             baseLog.logType(LogType.CUSTOM_INFO);
-            LOG.info(baseLog.parseLog(title,formatParam(params)));
+            LOG.info(baseLog.toJson(title,formatParam(params)));
         }
 
     }
@@ -28,7 +28,7 @@ public final class LogUtils {
         if(LOG.isDebugEnabled()) {
             BaseLog baseLog = LogContext.getBaseLog(null);
             baseLog.logType(LogType.CUSTOM_DEBUG);
-            LOG.debug(baseLog.parseLog(title,formatParam(params)));
+            LOG.debug(baseLog.toJson(title,formatParam(params)));
         }
 
     }
@@ -37,7 +37,7 @@ public final class LogUtils {
         if(LOG.isWarnEnabled()) {
             BaseLog baseLog = LogContext.getBaseLog(null);
             baseLog.logType(LogType.CUSTOM_WARN);
-            LOG.warn(baseLog.parseLog(title,formatParam(params)));
+            LOG.warn(baseLog.toJson(title,formatParam(params)));
         }
     }
 
@@ -45,7 +45,7 @@ public final class LogUtils {
         if(LOG.isErrorEnabled()) {
             BaseLog baseLog = LogContext.getBaseLog(null);
             baseLog.logType(LogType.CUSTOM_ERR);
-            LOG.error(baseLog.parseLog(title,formatParam(params)));
+            LOG.error(baseLog.toJson(title,formatParam(params)));
         }
     }
 
@@ -57,7 +57,7 @@ public final class LogUtils {
             Map<Object, Object> errMessage = new HashMap();
             errMessage.put("params",params);
             errMessage.put(title,e.getMessage());
-            LOG.error(baseLog.parseLog(errMessage));
+            LOG.error(baseLog.toJson(errMessage));
         }
 
     }

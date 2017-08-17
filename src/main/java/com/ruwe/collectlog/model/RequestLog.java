@@ -1,5 +1,8 @@
 package com.ruwe.collectlog.model;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.parser.Feature;
 import com.ruwe.collectlog.constant.LogType;
 import com.ruwe.collectlog.constant.MSName;
 import com.ruwe.collectlog.context.InvokeTree;
@@ -15,50 +18,50 @@ import java.util.Map;
 public class RequestLog extends BaseLog {
 
     //用户ID
-    private String token;
+    public String token;
     //包括访客的ID，如果已登录，与userId相同
-    private String uniqueId;
+    public String uniqueId;
     //json   app相关的信息 操作系统、应用版本、网络环境(wifi、运营商)、手机型号、gps、IMEI
-    private String appInfo;
+    public String appInfo;
     //request host
-    private String host;
+    public String host;
     //request serverName
-    private String serverName;
+    public String serverName;
     //referer
-    private String referer;
+    public String referer;
     //userAgent
-    private String userAgent;
+    public String userAgent;
     //cookie
-    private String cookie;
+    public String cookie;
     //客户端ip
-    private String clientIp;
+    public String clientIp;
     //mime type
-    private String contentType;
+    public String contentType;
     //请求方法
-    private String method;
+    public String method;
     //请求字符串
-    private String queryString;
+    public String queryString;
     //session id
-    private String sessionId;
+    public String sessionId;
     //request uri
-    private String requestURI;
+    public String requestURI;
     //request url
-    private String requestURL;
+    public String requestURL;
     //content path
-    private String contentPath;
+    public String contentPath;
     //servlet path
-    private String servletPath;
+    public String servletPath;
     //请求参数
-    private Map<String, String[]> params;
+    public Map<String, String[]> params;
 
 
-    private RequestLog() {
+    public RequestLog() {
     }
 
-    private RequestLog(BaseLog log) {
+    public RequestLog(BaseLog log) {
         this.id(log.getId())
-            .localIp(log.getLocalIp())
-            .localHostName(log.getLocalHostName());
+                .localIp(log.getLocalIp())
+                .localHostName(log.getLocalHostName());
     }
 
     public RequestLog id(String id) {
@@ -81,12 +84,12 @@ public class RequestLog extends BaseLog {
         return this;
     }
 
-    private RequestLog localIp(String localIp) {
+    public RequestLog localIp(String localIp) {
         this.localIp = localIp;
         return this;
     }
 
-    private RequestLog localHostName(String localHostName) {
+    public RequestLog localHostName(String localHostName) {
         this.localHostName = localHostName;
         return this;
     }
@@ -240,8 +243,20 @@ public class RequestLog extends BaseLog {
         return this;
     }
 
-    public static RequestLog build(BaseLog log){
+    public static RequestLog build(BaseLog log) {
         return new RequestLog(log);
     }
 
+    /**
+     * 将JSONString对象转换成RequestLog
+     * @param json
+     * @return
+     */
+    public static RequestLog toRequestLog(String json) {
+        Map<String, RequestLog> map = JSONObject.parseObject(json,new TypeReference<Map<String, RequestLog>>(){});
+        if (map.containsKey(RequestLog.class.getName())) {
+            return map.get(RequestLog.class.getName());
+        }
+        return null;
+    }
 }

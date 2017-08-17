@@ -83,11 +83,11 @@ public class WebLogger {
                     log.queryString(URLDecoder.decode(request.getQueryString(), "utf-8"));
                 } catch (UnsupportedEncodingException e) {
                     log.queryString(request.getQueryString());
-                    LOGGER_ERR.error(log.parseLog(e.getMessage()));
+                    LOGGER_ERR.error(log.toJson(e.getMessage()));
                 }
             }
 
-            LOGGER_WEB.info(log.parseLog());
+            LOGGER_WEB.info(log.toJson());
         }
 
         Object obj = null;
@@ -103,7 +103,7 @@ public class WebLogger {
                     .logType(LogType.parseResponse(logType))
                     .msName(MSName.valueOf(msName))
                     .invokeTree(invokeTree);
-            LOGGER_WEB.info(requestLog.parseLog());
+            LOGGER_WEB.info(requestLog.toJson());
 
             invokeTree.exit();
             baseLog.invokeTree(invokeTree);

@@ -1,20 +1,24 @@
 package com.ruwe.collectlog.model;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.ruwe.collectlog.constant.LogType;
 import com.ruwe.collectlog.constant.MSName;
 import com.ruwe.collectlog.context.InvokeTree;
+
+import java.util.Map;
 
 /**
  * Created by lipengfei on 2017/6/7.
  */
 public class CommonLog extends BaseLog {
-    private Object[] params;
-    private Object result;
+    public Object[] params;
+    public Object result;
 
-    private CommonLog() {
+    public CommonLog() {
     }
 
-    private CommonLog(BaseLog log) {
+    public CommonLog(BaseLog log) {
         this.id(log.getId())
                 .localIp(log.getLocalIp())
                 .localHostName(log.getLocalHostName());
@@ -40,12 +44,12 @@ public class CommonLog extends BaseLog {
         return this;
     }
 
-    private CommonLog localIp(String localIp) {
+    public CommonLog localIp(String localIp) {
         this.localIp = localIp;
         return this;
     }
 
-    private CommonLog localHostName(String localHostName) {
+    public CommonLog localHostName(String localHostName) {
         this.localHostName = localHostName;
         return this;
     }
@@ -75,5 +79,20 @@ public class CommonLog extends BaseLog {
 
     public static CommonLog build(BaseLog log) {
         return new CommonLog(log);
+    }
+
+    /**
+     * 将JSONString对象转换成CommonLog
+     *
+     * @param json
+     * @return
+     */
+    public static CommonLog toCommonLog(String json) {
+        Map<String, CommonLog> map = JSONObject.parseObject(json, new TypeReference<Map<String, CommonLog>>() {
+        });
+        if (map.containsKey(CommonLog.class.getName())) {
+            return map.get(CommonLog.class.getName());
+        }
+        return null;
     }
 }
