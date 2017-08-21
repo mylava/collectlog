@@ -19,9 +19,9 @@ public class CommonLog extends BaseLog {
     }
 
     public CommonLog(BaseLog log) {
-        this.id(log.getId())
-                .localIp(log.getLocalIp())
-                .localHostName(log.getLocalHostName());
+        this.id = log.getId();
+        this.localIp = log.getLocalIp();
+        this.localHostName = log.localHostName;
     }
 
     public CommonLog id(String id) {

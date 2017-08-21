@@ -65,7 +65,7 @@ public class BaseLog implements Serializable {
         return id;
     }
 
-    public BaseLog id(String id) {
+    private BaseLog id(String id) {
         this.id = id;
         return this;
     }

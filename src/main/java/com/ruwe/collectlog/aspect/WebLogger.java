@@ -5,7 +5,9 @@ import com.ruwe.collectlog.constant.MSName;
 import com.ruwe.collectlog.context.InvokeTree;
 import com.ruwe.collectlog.context.LogContext;
 import com.ruwe.collectlog.model.BaseLog;
+import com.ruwe.collectlog.model.DeviceInfo;
 import com.ruwe.collectlog.model.RequestLog;
+import com.ruwe.collectlog.model.UserInfo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,26 +58,38 @@ public class WebLogger {
         }
 
         if (request != null) {
+            DeviceInfo deviceInfo = new DeviceInfo()
+                    .clientVersion(request.getParameter("clientVersion"))
+                    .equipment(request.getParameter("equipment"))
+                    .gps(request.getParameter("gps"))
+                    .imei(request.getParameter("imei"))
+                    .network(request.getParameter("network"))
+                    .platform(request.getParameter("platform"))
+                    .wifi(request.getParameter("wifi"));
+
+            UserInfo userInfo = new UserInfo()
+                    .cookie(request.getHeader("Cookie"))
+                    .sessionId(request.getParameter("sessionId"));
+
             RequestLog log = RequestLog.build(baseLog)
                     .now(System.currentTimeMillis())
                     .logType(LogType.parseRequest(logType))
                     .msName(MSName.valueOf(msName))
                     .invokeTree(invokeTree)
-                    .appInfo("")
                     .host(request.getHeader("Host"))
                     .serverName(request.getServerName())
                     .referer(request.getHeader("Referer"))
                     .userAgent(request.getHeader("User-Agent"))
-                    .cookie(request.getHeader("Cookie"))
                     .clientIp(request.getRemoteAddr())
                     .contentType(request.getContentType())
                     .method(request.getMethod())
-                    .sessionId(request.getRequestedSessionId())
                     .requestURI(request.getRequestURI())
                     .requestURL(request.getRequestURL().toString())
                     .contentPath(request.getContextPath())
                     .servletPath(request.getServletPath())
-                    .params(request.getParameterMap());
+                    .params(request.getParameterMap())
+                    .deviceInfo(deviceInfo)
+                    .userInfo(userInfo);
 
 
             if (null != request.getQueryString() && !"".equals(request.getQueryString())) {
